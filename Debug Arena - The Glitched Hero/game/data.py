@@ -1,15 +1,10 @@
 
-# LEVEL ÖDÜL TABLOSU
-
 LEVEL_REWARDS = {
     2: {"name": "Güçlü İksir",    "type": "heal",         "value": 50, "uses": 1},
     3: {"name": "Saldırı Tozu",   "type": "attack_boost", "value": 8,  "uses": 1},
     4: {"name": "Demir Kalkan",   "type": "shield",       "value": 20, "uses": 1},
     5: {"name": "Uyuşturma Ruhu", "type": "stun",         "value": 0,  "uses": 1},
 }
-
-
-# BÖLÜM VERİLERİ
 
 CHAPTERS = {
     1: {

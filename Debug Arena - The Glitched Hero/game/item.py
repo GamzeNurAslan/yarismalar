@@ -1,8 +1,7 @@
-# item.py - Oyun içi eşyaların tanımlandığı modül
 class Item:
     def __init__(self, name, item_type, effect_value, uses=1):
         self.name = name
-        self.item_type = item_type   # "heal" | "attack_boost" | "shield" | "stun"
+        self.item_type = item_type
         self.effect_value = effect_value
         self.uses = uses
 
@@ -26,18 +25,19 @@ class Item:
             print(f"  {self.name} kullanıldı! {self.effect_value} hasara karşı kalkan aktif.")
 
         elif self.item_type == "stun":
-            # TODO: Felç (stun) etkisi türünde, parametre olarak gelen düşmanın 'stunned' durumunu aktif hale getir.
+            if enemy:
+                enemy.stunned = True
+                print(f" {self.name} kullanıldı! {enemy.name} 1 tur felç oldu.")
 
-            pass
-
+        self.uses -= 1
         return True
     
 
     def __str__(self):
         type_labels = {
-            "heal": "İyileşme"
-            "attack_boost": "Saldırı Güçlendirme"
-            "shield": "Kalkan"
+            "heal": "İyileşme",
+            "attack_boost": "Saldırı Güçlendirme",
+            "shield": "Kalkan",
             "stun": "Felç"
         }
         label = type_labels.get(self.item_type, self.item_type)

@@ -1,4 +1,3 @@
-# battle.py - Savaş mekaniklerini yöneten modül
 import random
 
 class Battle:
@@ -7,8 +6,10 @@ class Battle:
         self.enemy = enemy
         self.turn_count = 0
         self.battle_log = []
+        self.escape_attempts = 0
 
     def start_battle(self):
+        self.player.combo_count = 0
         print(f"\n  {'='*43}")
         print(f"  SAVAŞ: {self.player.name}  vs  {self.enemy.name}")
         print(f"  {'='*43}\n")
@@ -28,6 +29,9 @@ class Battle:
                 else:
                     self.enemy_turn()
 
+            if self.player.fireball_cooldown > 0:
+                self.player.fireball_cooldown -= 1
+
         return self.end_battle()
 
     def player_turn(self):
@@ -36,10 +40,11 @@ class Battle:
         print("  2. Savun")
         print("  3. Envanter")
         print("  4. Kaç")
+        print("  5. Ateş Topu")
 
         while True:
-            choice = input("  Seçim yap (1-4): ").strip()
-            if choice in ["1", "2", "3", "4"]:
+            choice = input("  Seçim yap (1-5): ").strip()
+            if choice in ["1", "2", "3", "4", "5"]:
                 break
             print("  Geçersiz seçim!")
 
@@ -58,9 +63,16 @@ class Battle:
             inv_result = self.use_inventory()
             if inv_result == "no_items":
                 print("  Envanterde kullanılabilir item yok!")
-            return "continue" # TODO: Oyuncu envanteri açıp bir işlem yaptıktan sonra, sırasını kaybetmeden hamle seçimine geri dönmesini sağla.
-        
+            return self.player_turn()
+
         elif choice == "4":
+            self.escape_attempts += 1
+
+            if self.escape_attempts > 3:
+                print(f"  {self.enemy.name} yolunu kapattı! Artık kaçamazsın!")
+                self.battle_log.append(f"  {self.player.name} kaçmaya çalıştı ama engellendi.")
+                return "failed_flee"
+
             if random.random() < 0.5:
                 print("  Başarıyla kaçtın!")
                 self.battle_log.append(f"  {self.player.name} kaçtı!")
@@ -70,12 +82,23 @@ class Battle:
                 self.battle_log.append(f"  {self.player.name} kaçamadı.")
                 return "failed_flee"
 
+        elif choice == "5":
+            damage = self.player.fireball()
+            if damage > 0:
+                actual = self.enemy.take_damage(damage)
+                msg = f"  Ateş Topu {self.enemy.name} üzerinde {actual} hasar verdi!"
+                print(msg)
+                self.battle_log.append(msg)
+            else:
+                return self.player_turn()
+
         return "continue"
 
     def use_inventory(self):
-        self.player.inventory.show()
         if not self.player.inventory.has_items():
             return "no_items"
+
+        self.player.inventory.show()
 
         while True:
             choice = input("  Kullanmak istediğin item numarası (0=geri): ").strip()
@@ -91,7 +114,7 @@ class Battle:
                         return "used"
             print("  Geçersiz seçim!")
 
-    def enemy_turn(self, damage_multiplier=1)  
+    def enemy_turn(self, damage_multiplier=1):
         damage = self.enemy.attack()
         if damage == 0:
             return
@@ -120,3 +143,4 @@ class Battle:
         else:
             print(f"  KAYBETTİN! {self.player.name} yenildi...")
             return "lose"
+

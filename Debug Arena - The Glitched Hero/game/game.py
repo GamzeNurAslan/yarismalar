@@ -1,4 +1,7 @@
-# TODO: Sınıf etkileşimleri için gerekli olan içe aktarma (import) işlemlerini tamamla
+from game.character import Character
+from game.data import CHAPTERS
+from game.enemy import Enemy
+from game.battle import Battle
 import random
 
 class Game:
@@ -24,8 +27,8 @@ class Game:
         print(f"\n  {chapter['intro']}\n")
         input("  [Devam etmek için Enter'a bas...]\n")
 
-        enemies_data = chapter["enemies"].copy()  #henüz oluşturulmamış düşmanlar
-        fled_enemies = []                        # kaçılan Enemy objeleri (HP korunur)  
+        enemies_data = chapter["enemies"].copy()
+        fled_enemies = []
 
         while enemies_data or fled_enemies:
 
@@ -52,9 +55,6 @@ class Game:
                 return "lose"
 
             if result == "fled":
-                # TODO: Oyuncu bir düşmandan kaçtığında, o düşmanın mevcut can değerini (current HP) koru; canını tamamlama.
-                # Düşmanı mevcut HP'siyle kuyruğa ekle
-                enemy.current_hp = enemy.max_hp  
                 fled_enemies.append(enemy)
                 print(f"  Kaçtın! Ama {enemy.name} peşini bırakmayacak...")
                 continue
@@ -87,6 +87,7 @@ class Game:
                     print("  OYUN BİTTİ. Daha güçlü ol ve tekrar dene!")
                     print("=" * 45)
                     return
+                self.lucky_chest()
                 print(f"\n  Bir sonraki bölüme geçiliyor...")
                 input("  [Devam etmek için Enter'a bas...]\n")
 
@@ -94,3 +95,27 @@ class Game:
         print("  TÜM BÖLÜMLER TAMAMLANDI! EFSANE KAHRAMAN!")
         print("=" * 45)
         self.player.show_stats()
+
+    def lucky_chest(self):
+        if random.random() > 0.35:
+            return
+
+        print("\n  Eski bir sandık buldun!")
+
+        event = random.choice(["heal", "buff", "trap"])
+
+        if event == "heal":
+            before = self.player.current_hp
+            self.player.current_hp = min(self.player.current_hp + 20, self.player.max_hp)
+            healed = self.player.current_hp - before
+            print(f"  Sandıktan şifa çıktı! +{healed} HP kazandın.")
+
+        elif event == "buff":
+            self.player.temp_damage_boost += 5
+            print("  Sandıktan güç rünü çıktı! Sonraki saldırın +5 hasar kazanacak.")
+
+
+        elif event == "trap":
+            damage = self.player.take_damage(10)
+            print("  Sandığın içinden zehirli gaz yayıldı!")
+            print(f"  Tuzaktan {damage} hasar aldın.")
