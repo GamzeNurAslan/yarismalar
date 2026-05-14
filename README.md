@@ -55,26 +55,83 @@ Seviye atlama sistemi eksik çalışıyordu. XP sıfırlama, maksimum HP artırm
 
 ## Eklenen Bonus Özellikler ✨
 
-### Kritik Vuruş Sistemi
-Oyuncu saldırılarında belirli bir ihtimalle kritik vuruş yapabilir ve normal hasarın iki katını verir.
+Oyundaki hataları başarıyla ayıkladıktan sonra projeye bazı ek özellikler de ekledim. Bu özellikler oyunun daha eğlenceli, dinamik ve geliştirilebilir hale gelmesini amaçlamaktadır.
 
-### Combo Sistemi
-Oyuncu arka arkaya saldırı yaptığında combo oluşur ve ek hasar kazanır.
 
-### Ateş Topu Yeteneği
-Oyuncuya cooldown süresi olan özel bir ateş topu saldırısı eklendi.
+### Bonus Özellik 1: Kritik Vuruş Sistemi
 
-### Dodge Sistemi
-Karakter belirli bir ihtimalle düşman saldırılarından tamamen kaçınabilir.
+**Nasıl Çalışıyor:**  
+Karakter saldırı yaptığında belirli bir ihtimalle kritik vuruş gerçekleştirir. Kritik vuruş gerçekleşirse normal saldırı hasarı iki katına çıkar. Bu özellik savaşlara şans faktörü ekleyerek oyunu daha heyecanlı hale getirir.
 
-### Berserk Enemy Sistemi
-Düşmanların canı kritik seviyeye düştüğünde saldırı güçleri artar.
+**Dosya ve Konum Bilgisi:**  
+Mevcut Dosya: `game/character.py`  
+Geçtiği Yer: `attack()` metodu
 
-### Lucky Chest Sistemi
-Bölüm geçişlerinde rastgele sandık etkinlikleri eklendi. Sandıklardan şifa, güçlendirme veya tuzak çıkabilir.
 
-### Unit Test Sistemi
-`pytest` ile temel oyun mekaniklerini test eden unit testler yazıldı.
+### Bonus Özellik 2: Combo Sistemi
+
+**Nasıl Çalışıyor:**  
+Oyuncu arka arkaya saldırı yaptığında combo sayacı artar. Combo sayısına göre oyuncu ek hasar kazanır. Böylece sürekli saldırı yapmayı tercih eden oyuncular için ödüllendirici bir savaş mekaniği oluşur.
+
+**Dosya ve Konum Bilgisi:**  
+Mevcut Dosya: `game/character.py`  
+Geçtiği Yerler: `attack()`, `defend()` ve `fireball()` metotları  
+
+Mevcut Dosya: `game/battle.py`  
+Geçtiği Yer: Savaş başlangıcında combo sayacının sıfırlanması
+
+
+### Bonus Özellik 3: Ateş Topu Yeteneği
+
+**Nasıl Çalışıyor:**  
+Oyuncuya özel bir yetenek olarak Ateş Topu saldırısı eklendi. Ateş Topu normal saldırıdan daha yüksek hasar verir. Ancak bu yetenek kullanıldıktan sonra cooldown süresine girer ve birkaç tur boyunca tekrar kullanılamaz.
+
+**Dosya ve Konum Bilgisi:**  
+Mevcut Dosya: `game/character.py`  
+Geçtiği Yer: `fireball()` metodu  
+
+Mevcut Dosya: `game/battle.py`  
+Geçtiği Yerler: Oyuncu savaş menüsü ve Ateş Topu seçeneğinin işlendiği bölüm
+
+
+### Bonus Özellik 4: Dodge Sistemi
+
+**Nasıl Çalışıyor:**  
+Karakter düşman saldırısı aldığında belirli bir ihtimalle saldırıdan tamamen kaçınabilir. Dodge gerçekleştiğinde oyuncu hiç hasar almaz. Bu sistem savaşlara savunma dışında ekstra bir hayatta kalma şansı ekler.
+
+**Dosya ve Konum Bilgisi:**  
+Mevcut Dosya: `game/character.py`  
+Geçtiği Yer: `take_damage()` metodu
+
+
+### Bonus Özellik 5: Berserk Enemy Sistemi
+
+**Nasıl Çalışıyor:**  
+Düşmanların canı kritik seviyeye düştüğünde saldırı güçleri artar. Düşmanın HP değeri belirli bir oranın altına indiğinde düşman vahşileşir ve daha fazla hasar verir. Bu özellik savaşların son bölümünü daha zorlu hale getirir.
+
+**Dosya ve Konum Bilgisi:**  
+Mevcut Dosya: `game/enemy.py`  
+Geçtiği Yer: `attack()` metodu
+
+
+### Bonus Özellik 6: Lucky Chest Sistemi
+
+**Nasıl Çalışıyor:**  
+Bölüm geçişlerinde oyuncunun karşısına rastgele bir sandık çıkabilir. Bu sandıktan şifa, saldırı güçlendirmesi veya tuzak çıkabilir. Böylece bölüm geçişlerine rastgele olay mekaniği eklenmiştir.
+
+**Dosya ve Konum Bilgisi:**  
+Mevcut Dosya: `game/game.py`  
+Geçtiği Yerler: `start()` ve `lucky_chest()` metotları
+
+
+### Bonus Özellik 7: Unit Test Sistemi
+
+**Nasıl Çalışıyor:**  
+Oyundaki temel mekaniklerin doğru çalıştığını kontrol etmek için `pytest` kullanılarak unit testler yazıldı. Bu testlerle karakter hasarı, HP sınırlandırması, eşya kullanımı, düşman durumu, envanter ve seviye sistemi gibi yapıların doğrulanması amaçlandı.
+
+**Dosya ve Konum Bilgisi:**  
+Yeni Dosya ise: `tests/` klasörü altında test dosyaları  
+Kullanıldığı Yerler: Temel oyun mekaniklerini test etmek için `pytest` ile çalıştırılır
 
 ---
 
