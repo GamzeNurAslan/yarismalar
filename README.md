@@ -1,4 +1,4 @@
-# ÇÖZÜLEN HATALAR FORMU
+# **ÇÖZÜLEN HATALAR FORMU**
 
 ### 1- Ana Oyun Başlatma Sisteminin Eksik Olması
 
@@ -112,7 +112,7 @@
 
 ---
 
-# EKLENEN BONUS ÖZELLİKLER
+# **EKLENEN BONUS ÖZELLİKLER**
 
 ### Bonus Özellik 1: Kritik Vuruş Sistemi
 
