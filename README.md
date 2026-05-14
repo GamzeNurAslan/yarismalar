@@ -1,164 +1,92 @@
-# **ÇÖZÜLEN HATALAR FORMU**
+# Debug Arena - The Glitched Hero
 
-### 1- Ana Oyun Başlatma Sisteminin Eksik Olması
+## Proje Hakkında
 
-* **Dosya Adı ve Satır Aralığı:** `main.py`
-* **Hatanın Sebebi:** Oyun motorunu başlatacak giriş noktası eksikti. Game sınıfı çalıştırılmadığı için oyun açılmıyordu.
-* **Nasıl Çözdünüz:** `Game` sınıfı import edilerek `game.start()` çağrısı eklendi.
+**Debug Arena - The Glitched Hero**, Python ile geliştirilmiş metin tabanlı bir savaş oyunudur. Oyuncu düşmanlarla savaşır, envanterindeki eşyaları kullanır, bölümleri geçer ve seviye atlayarak güçlenir.
 
----
-
-### 2- Character Sınıfının Import Edilmemesi
-
-* **Dosya Adı ve Satır Aralığı:** `game/game.py`
-* **Hatanın Sebebi:** Character sınıfı import edilmediği için `NameError` oluşuyordu.
-* **Nasıl Çözdünüz:** `from game.character import Character` importu eklendi.
+Bu projede oyunun çalışmasını engelleyen hatalar düzeltilmiş, savaş sistemi geliştirilmiş ve oyuna yeni özellikler eklenmiştir.
 
 ---
 
-### 3- CHAPTERS Verisinin Eksik Kullanımı
+## Çözülen Hatalar 🛠️
 
-* **Dosya Adı ve Satır Aralığı:** `game/game.py`
-* **Hatanın Sebebi:** Bölüm verileri import edilmediği için oyun bölümleri çalışmıyordu.
-* **Nasıl Çözdünüz:** `from game.data import CHAPTERS` importu eklendi.
+### 1. Oyun Başlatma Hatası
+`main.py` dosyasında oyun başlatma sistemi eksikti. `Game` sınıfı import edilerek `game.start()` çağrısı eklendi.
 
----
+### 2. Eksik Import Hataları
+`game/game.py` dosyasında `Character` sınıfı ve `CHAPTERS` verisi import edilmediği için oyun hata veriyordu. Gerekli importlar eklendi.
 
-### 4- Enemy Constructor Parametre Hatası
+### 3. Enemy Constructor Hatası
+`game/enemy.py` dosyasında düşman oluşturmak için gerekli parametreler eksikti. Constructor yapısı `name`, `hp`, `damage`, `xp_reward` ve `level` bilgilerini alacak şekilde düzenlendi.
 
-* **Dosya Adı ve Satır Aralığı:** `game/enemy.py`
-* **Hatanın Sebebi:** Enemy sınıfı gerekli parametreleri almadığı için düşman oluşturulamıyordu.
-* **Nasıl Çözdünüz:** Enemy constructor’ı `name`, `hp`, `damage`, `xp_reward` ve `level` parametrelerini alacak şekilde düzenlendi.
+### 4. Hasar Sisteminin Çalışmaması
+`game/character.py` dosyasında oyuncu saldırısı sürekli 0 hasar veriyordu. Hasar formülü yeniden yazıldı ve rastgele hasar sistemi eklendi.
 
----
+### 5. Savunma Sisteminin Çalışmaması
+Savunma seçildiğinde karakter savunma moduna geçmiyordu. `is_defending` kontrolü eklenerek savunma sistemi aktif edildi.
 
-### 5- Oyuncunun 0 Hasar Vermesi
+### 6. HP Değerlerinin Negatife Düşmesi
+Karakter ve düşman HP değerleri 0’ın altına düşebiliyordu. HP değerleri `max(0, hp)` mantığıyla sınırlandırıldı.
 
-* **Dosya Adı ve Satır Aralığı:** `game/character.py`
-* **Hatanın Sebebi:** Attack fonksiyonu sürekli `0` döndürüyordu.
-* **Nasıl Çözdünüz:** Hasar formülü yeniden yazılarak temel hasar + rastgele hasar + buff sistemi eklendi.
+### 7. Düşman Ölüm Kontrolü
+HP değeri 0 olan düşman hâlâ canlı kabul ediliyordu. `is_alive()` kontrolü `current_hp > 0` olacak şekilde düzeltildi.
 
----
+### 8. Envanter Kullanımında Tur Kaybı
+Oyuncu envanteri açtığında tur direkt bitiyordu. Envanter sonrası oyuncunun tekrar seçim yapabilmesi sağlandı.
 
-### 6- Savunma Sisteminin Çalışmaması
+### 9. Item Kullanım Hakkı
+Item kullanıldığında kullanım hakkı azalmıyordu. Her kullanım sonrası `uses` değeri azaltıldı.
 
-* **Dosya Adı ve Satır Aralığı:** `game/character.py`
-* **Hatanın Sebebi:** Savunma seçildiğinde karakter savunma moduna geçmiyordu.
-* **Nasıl Çözdünüz:** `self.is_defending = True` eklenerek savunma sistemi aktif edildi.
+### 10. Stun Sistemi
+Felç etkisi düşmanın saldırmasını engellemiyordu. `stunned` kontrolü eklendi ve felçli düşmanın saldırısı atlandı.
 
----
+### 11. Kaçılan Düşmanın HP Durumu
+Oyuncu düşmandan kaçınca, düşman tekrar karşılaşıldığında tam canla geliyordu. Düşmanın mevcut HP değeri korunacak şekilde düzenleme yapıldı.
 
-### 7- HP Değerlerinin Negatif Olabilmesi
+### 12. Level Up Sistemi
+Seviye atlama sistemi eksik çalışıyordu. XP sıfırlama, maksimum HP artırma ve tam iyileşme sistemi eklendi.
 
-* **Dosya Adı ve Satır Aralığı:** `game/character.py`, `game/enemy.py`
-* **Hatanın Sebebi:** Karakter ve düşmanların HP değerleri 0’ın altına düşebiliyordu.
-* **Nasıl Çözdünüz:** HP değerleri `max(0, hp)` mantığıyla sınırlandırıldı.
-
----
-
-### 8- Düşmanın Ölmemesi
-
-* **Dosya Adı ve Satır Aralığı:** `game/enemy.py`
-* **Hatanın Sebebi:** HP değeri 0 olan düşman hâlâ canlı kabul ediliyordu.
-* **Nasıl Çözdünüz:** `is_alive()` kontrolü `current_hp > 0` olacak şekilde düzeltildi.
+### 13. Envanter Slot Sistemi
+`expand_slot()` fonksiyonu boştu. `self.max_slots += 1` eklenerek envanter kapasitesi artırılabilir hale getirildi.
 
 ---
 
-### 9- Envanter Kullanımında Tur Kaybı
+## Eklenen Bonus Özellikler ✨
 
-* **Dosya Adı ve Satır Aralığı:** `game/battle.py`
-* **Hatanın Sebebi:** Oyuncu envanter açtığında tur direkt sona eriyordu.
-* **Nasıl Çözdünüz:** Envanter sonrası oyuncunun tekrar seçim yapabilmesi sağlandı.
+### Kritik Vuruş Sistemi
+Oyuncu saldırılarında belirli bir ihtimalle kritik vuruş yapabilir ve normal hasarın iki katını verir.
 
----
+### Combo Sistemi
+Oyuncu arka arkaya saldırı yaptığında combo oluşur ve ek hasar kazanır.
 
-### 10- Item Kullanım Haklarının Azalmaması
+### Ateş Topu Yeteneği
+Oyuncuya cooldown süresi olan özel bir ateş topu saldırısı eklendi.
 
-* **Dosya Adı ve Satır Aralığı:** `game/item.py`
-* **Hatanın Sebebi:** Item kullanıldığında uses değeri azalmıyordu.
-* **Nasıl Çözdünüz:** Her kullanım sonrası `self.uses -= 1` eklendi.
+### Dodge Sistemi
+Karakter belirli bir ihtimalle düşman saldırılarından tamamen kaçınabilir.
 
----
+### Berserk Enemy Sistemi
+Düşmanların canı kritik seviyeye düştüğünde saldırı güçleri artar.
 
-### 11- Stun Sisteminin Çalışmaması
+### Lucky Chest Sistemi
+Bölüm geçişlerinde rastgele sandık etkinlikleri eklendi. Sandıklardan şifa, güçlendirme veya tuzak çıkabilir.
 
-* **Dosya Adı ve Satır Aralığı:** `game/item.py`, `game/enemy.py`
-* **Hatanın Sebebi:** Felç etkisi düşmanın saldırmasını engellemiyordu.
-* **Nasıl Çözdünüz:** `stunned` sistemi eklendi ve felç durumunda saldırının atlanması sağlandı.
-
----
-
-### 12- Kaçılan Düşmanın HP’sinin Yenilenmesi
-
-* **Dosya Adı ve Satır Aralığı:** `game/game.py`
-* **Hatanın Sebebi:** Kaçılan düşman tekrar karşılaşıldığında canı tamamen doluyordu.
-* **Nasıl Çözdünüz:** Düşmanın mevcut HP değeri korunarak tekrar savaşa dahil edilmesi sağlandı.
+### Unit Test Sistemi
+`pytest` ile temel oyun mekaniklerini test eden unit testler yazıldı.
 
 ---
 
-### 13- Level Up Sisteminin Eksik Çalışması
+## Kullanılan Teknolojiler 💻
 
-* **Dosya Adı ve Satır Aralığı:** `game/character.py`
-* **Hatanın Sebebi:** Level atlandığında XP sıfırlanmıyor ve maksimum HP artmıyordu.
-* **Nasıl Çözdünüz:** XP sıfırlandı, maksimum HP artırıldı ve karakter tam iyileştirildi.
-
----
-
-### 14- Envanter Slot Sisteminin Çalışmaması
-
-* **Dosya Adı ve Satır Aralığı:** `game/inventory.py`
-* **Hatanın Sebebi:** expand_slot fonksiyonu boş bırakıldığı için envanter kapasitesi artmıyordu.
-* **Nasıl Çözdünüz:** `self.max_slots += 1` eklenerek slot sistemi aktif edildi.
+- Python
+- Pytest
+- Git
+- GitHub
+- Nesne Yönelimli Programlama
 
 ---
 
-# **EKLENEN BONUS ÖZELLİKLER**
+## Oyunu Çalıştırma ▶️
 
-### Bonus Özellik 1: Kritik Vuruş Sistemi
-
-* **Nasıl Çalışıyor:** Karakter saldırılarında %10 ihtimalle kritik vuruş yaparak normal hasarın 2 katını verir.
-* **Dosya ve Konum Bilgisi:** `game/character.py → attack()`
-
----
-
-### Bonus Özellik 2: Combo Sistemi
-
-* **Nasıl Çalışıyor:** Oyuncu arka arkaya saldırı yaptığında combo oluşur ve ek hasar kazanır.
-* **Dosya ve Konum Bilgisi:** `game/character.py → attack(), defend()`
-
----
-
-### Bonus Özellik 3: Ateş Topu Yeteneği
-
-* **Nasıl Çalışıyor:** Oyuncu cooldown süresine sahip özel Ateş Topu saldırısı kullanabilir.
-* **Dosya ve Konum Bilgisi:** `game/character.py → fireball()`
-* **Diğer Geçtiği Yerler:** `game/battle.py → player_turn()`
-
----
-
-### Bonus Özellik 4: Dodge Sistemi
-
-* **Nasıl Çalışıyor:** Karakter belirli ihtimalle düşman saldırılarından tamamen kaçınabilir.
-* **Dosya ve Konum Bilgisi:** `game/character.py → take_damage()`
-
----
-
-### Bonus Özellik 5: Berserk Enemy Sistemi
-
-* **Nasıl Çalışıyor:** Düşmanların canı kritik seviyeye düştüğünde saldırıları güçlenir.
-* **Dosya ve Konum Bilgisi:** `game/enemy.py → attack()`
-
----
-
-### Bonus Özellik 6: Lucky Chest Sistemi
-
-* **Nasıl Çalışıyor:** Bölüm geçişlerinde oyuncu rastgele sandık etkinlikleriyle karşılaşabilir. Sandıklardan şifa, güçlendirme veya tuzak çıkabilir.
-* **Dosya ve Konum Bilgisi:** `game/game.py → lucky_chest()`
-
----
-
-### Bonus Özellik 7: Unit Test Sistemi
-
-* **Nasıl Çalışıyor:** Oyunun temel mekaniklerini doğrulamak amacıyla pytest ile testler yazıldı.
-* **Test Edilen Sistemler:** Attack, defend, HP sınırı, item kullanımı, stun sistemi ve enemy ölüm kontrolü.
-* **Yeni Dosya:** `test_game_logic.py`
+```bash
+python main.py
