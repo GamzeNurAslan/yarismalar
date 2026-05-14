@@ -2,9 +2,11 @@
 
 ## Proje Hakkında
 
-**Debug Arena - The Glitched Hero**, Python ile geliştirilmiş metin tabanlı bir savaş oyunudur. Oyuncu düşmanlarla savaşır, envanterindeki eşyaları kullanır, bölümleri geçer ve seviye atlayarak güçlenir.
+**Debug Arena - The Glitched Hero**, Türkiye Yapay Zeka Topluluğu tarafından düzenlenen bir **debugging simülasyonu** kapsamında geliştirilmiş Python tabanlı metin savaş oyunudur.
 
-Bu projede oyunun çalışmasını engelleyen hatalar düzeltilmiş, savaş sistemi geliştirilmiş ve oyuna yeni özellikler eklenmiştir.
+Bu simülasyonda amaç, projede bulunan hataları tespit etmek, nedenlerini anlamak ve kod üzerinde gerekli düzeltmeleri yaparak oyunu çalışır hale getirmektir. Ben de çözüm sürecinde önce oyunun çalışmasını engelleyen temel hataları analiz ettim, ardından karakter, düşman, savaş, envanter ve seviye sistemlerindeki eksiklikleri düzenledim.
+
+Proje sürecinde yalnızca hataları düzeltmekle kalmadım; oyunun daha eğlenceli ve geliştirilebilir olması için kritik vuruş, combo, ateş topu, dodge, berserk enemy, lucky chest ve unit test gibi ek özellikler de ekledim.
 
 ---
 
